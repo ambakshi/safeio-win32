@@ -1,0 +1,5 @@
+*.obj
+*.[od]
+*.exe
+output*.txt
+*.tmp
