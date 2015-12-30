@@ -29,6 +29,7 @@ ALL += $$($1_PROG)
 OBJS += $$($1_OBJ)
 DEPS += $$($1_D)
 all: $$($1_PROG)
+$$($1_OBJ): $2
 $$($1_PROG): $$($1_OBJ)
 endef
 
@@ -37,12 +38,14 @@ $(eval $(call PROG,safeio,safeio.c main.c))
 $(eval $(call PROG,cpu,cpu.c))
 $(eval $(call PROG,wait-chain,wait-chain.c))
 $(eval $(call PROG,hardlink,hardlink.c))
+$(eval $(call PROG,fsctl_filesystem_get_statistics,fsctl_filesystem_get_statistics.c))
 
 ifneq ($(DEBUG),)
 $(info $(call PROG,safeio,safeio.c main.c))
 $(info $(call PROG,cpu,cpu.c))
 $(info $(call PROG,wait-chain,wait-chain.c))
 $(eval $(call PROG,hardlink,hardlink.c))
+$(eval $(call PROG,fsctl_filesystem_get_statistics,fsctl_filesystem_get_statistics.c))
 endif
 
 wait-chain_CCFLAGS = /DUNICODE=1 /wd4061 /wd4365 /wd4191 /wd4777 
