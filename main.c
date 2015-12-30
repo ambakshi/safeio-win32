@@ -1,7 +1,8 @@
 #include "safeio.h"
 #include <windows.h>
 
-int main(int , const char **) {
+int main(int, const char **)
+{
 
     FILE *fp = sfopen("output.txt", "wt");
 

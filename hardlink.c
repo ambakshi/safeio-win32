@@ -61,7 +61,8 @@ hardlink_error:
 unsigned main(int argc, char **argv)
 {
     if (argc != 3) {
-        fprintf(stderr, "usage: %s dstfile srcfile\n\nexample:\n\t%s target.bin source.bin\n\n", argv[0], argv[0]);
+        fprintf(stderr, "usage: %s dstfile srcfile\n\nexample:\n\t%s target.bin source.bin\n\n",
+                argv[0], argv[0]);
         return 2;
     }
     return hardlink(argv[1], argv[2]);

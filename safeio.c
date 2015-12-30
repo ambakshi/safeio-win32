@@ -18,28 +18,28 @@
 #include <assert.h>
 #include <io.h>
 
-DWORD safeio_printerr(DWORD err, const char *desc, const char *path) {
+DWORD safeio_printerr(DWORD err, const char *desc, const char *path)
+{
     char msgBuf[1024] = "";
 
     if (err == ERROR_SUCCESS)
         return ERROR_SUCCESS;
 
-    FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                   NULL, err, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), msgBuf,
-                   sizeof(msgBuf), NULL);
+    FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, err,
+                   MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), msgBuf, sizeof(msgBuf), NULL);
 
-    fprintf(stderr, "ERROR[0x%08X] [%d] %s: %s. %s\n", err,
-            GetCurrentThreadId(), desc, path ? path : "<none>", msgBuf);
+    fprintf(stderr, "ERROR[0x%08X] [%d] %s: %s. %s\n", err, GetCurrentThreadId(), desc,
+            path ? path : "<none>", msgBuf);
     return err;
 }
 
-DWORD sfrename(FILE *fp, const char *path) {
+DWORD sfrename(FILE *fp, const char *path)
+{
     DWORD err = ERROR_SUCCESS;
     FILE_RENAME_INFO *finfo;
     HANDLE fh;
     const size_t plen = strlen(path);
-    const DWORD nbytes =
-        (DWORD)(sizeof(FILE_RENAME_INFO) + sizeof(WCHAR) * plen);
+    const DWORD nbytes = (DWORD)(sizeof(FILE_RENAME_INFO) + sizeof(WCHAR) * plen);
 
     int fd = _fileno(fp);
     if (fd == -1) {
@@ -64,7 +64,8 @@ DWORD sfrename(FILE *fp, const char *path) {
     return err;
 }
 
-FILE *sfopen(const char *path, const char *mode) {
+FILE *sfopen(const char *path, const char *mode)
+{
     char tmpfile[MAX_PATH];
     assert(mode && mode[0] == 'w');
 
@@ -72,10 +73,8 @@ FILE *sfopen(const char *path, const char *mode) {
 
     _snprintf(tmpfile, MAX_PATH, "%s%04x", path, GetCurrentThreadId() & 0xffff);
 
-    HANDLE fh =
-        CreateFileA(tmpfile, GENERIC_ALL,
-                    FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
-                    NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE fh = CreateFileA(tmpfile, GENERIC_ALL, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
+                            NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (fh == INVALID_HANDLE_VALUE) {
         return NULL;
     }
